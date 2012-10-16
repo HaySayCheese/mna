@@ -1,20 +1,25 @@
 #include "interpreter.h"
 #include <iostream>
+#include <cstring>
 
 
-struct Settings{
+struct Settings {
+    Settings():
+        lambdaAtBegin(false), comatAtEnd(false) {}
+
     std::string filename;
+    bool lambdaAtBegin;
+    bool comatAtEnd;
 };
 
 
-bool processArguments(int argc, char* argv[], Settings &arguments)
-{
-    if (argc <= 1){
+bool processArguments(int argc, char* argv[], Settings &arguments) {
+    if (argc <= 1) {
         std::cout << "No input file specified. Process stopped." << std::endl;
         return false;
     }
 
-    for (int i=1; i<argc; ++i){
+    for (size_t i=1; i<argc; ++i) {
 #ifdef WIN_32
         // todo: keys parsing here
         if (argv[i][0] == '/'){}
@@ -22,7 +27,7 @@ bool processArguments(int argc, char* argv[], Settings &arguments)
 
 #ifdef LINUX
         // todo: keys parsing here
-        if (argv[i][0] == '-'){}
+        if (argv[i] == "-l") {}
 #endif
 
         else
@@ -37,8 +42,7 @@ bool processArguments(int argc, char* argv[], Settings &arguments)
 }
 
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     Settings settings;
     if (! processArguments(argc, argv, settings))
         return 1;

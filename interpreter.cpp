@@ -729,13 +729,12 @@ bool Interpreter::executeInstructions() {
 
 #define NUMBER_COLUMN_WIDTH        4
 #define INSTR_NUMBER_COLUMN_WIDTH  8
-#define SOURCE_WORD_COLUMN_WIDTH   17
 
     /* Caption */
     std::cout << std::endl << "Executing process: "   << std::endl;
     std::cout << std::setw(NUMBER_COLUMN_WIDTH)       << std::left << "N "
               << std::setw(INSTR_NUMBER_COLUMN_WIDTH) << std::left << "Instr. "
-              << std::setw(SOURCE_WORD_COLUMN_WIDTH)  << std::left << "Source word "
+              << std::left << "Source word "
               << std::endl;
 
     /* Executing instructions and print results. */
@@ -751,7 +750,7 @@ bool Interpreter::executeInstructions() {
             ++number;
             std::cout << std::setw(NUMBER_COLUMN_WIDTH) << number
                       << std::setw(INSTR_NUMBER_COLUMN_WIDTH) << i
-                      << std::setw(SOURCE_WORD_COLUMN_WIDTH)  << mSourceWord
+                      << mSourceWord
                       << std::endl;
 
             if (instr.isFinal())
@@ -787,9 +786,35 @@ bool Interpreter::executeInstruction(Instruction &instr) {
         if (pos == std::string::npos)
             return false;
 
-        mSourceWord = mSourceWord.replace(pos, instr.replaceble().size(), instr.replacer());
+        if (instr.replacer() == "!")
+            mSourceWord = mSourceWord.erase(pos, instr.replaceble().size());
+        else
+            mSourceWord = mSourceWord.replace(pos, instr.replaceble().size(), instr.replacer());
+
+        checkSystemFirstSymbol();
+        checkSystemLastSymbol();
         return true;
     }
 
     return false;
+}
+
+
+void Interpreter::checkSystemFirstSymbol() {
+
+    /* Checks if first symbol of source word is "!".
+     * If not - inserts first symbol "!".  */
+
+    if (mSourceWord.at(0) != '!')
+        mSourceWord.insert(0, "!");
+}
+
+
+void Interpreter::checkSystemLastSymbol() {
+
+    /* Checks if last symbol of source word is "@".
+     * If not - inserts last symbol "@".  */
+
+    if (mSourceWord.at(mSourceWord.size() - 1) != '@')
+        mSourceWord.push_back('@');
 }

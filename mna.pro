@@ -9,4 +9,5 @@ HEADERS += \
     interpreter.h
 
 DEFINES += LINUX
+DEFINES += NDEBUG
 

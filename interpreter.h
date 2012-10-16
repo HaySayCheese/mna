@@ -69,7 +69,9 @@ private:
    bool loadInstructions(FileLinesInputStream &file);
 
    bool executeInstructions();
-   inline bool executeInstruction(Instruction &instr);
+   bool executeInstruction(Instruction &instr);
+   inline void checkSystemFirstSymbol();
+   inline void checkSystemLastSymbol();
 
    void printAllInstructions() const;
 

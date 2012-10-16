@@ -418,6 +418,11 @@ bool Interpreter::loadSourceWord(FileLinesInputStream &file) {
     assert(file.isOk());
 #endif
 
+    /* Add system symbols to the alphabet. */
+    mAlphabet.addSymbol('!');
+    mAlphabet.addSymbol('@');
+
+
     bool fileContainsErrors = false;
     std::string line;
 
